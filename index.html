@@ -1,0 +1,135 @@
+<canvas id="canva"/>
+<script>
+  var c = document.getElementById("canva");
+  var ctx = c.getContext("2d");
+  // ctx.scale(0.5, 0.5);
+
+  CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+      if (w < 2 * r) r = w / 2;
+      if (h < 2 * r) r = h / 2;
+      this.beginPath();
+      this.moveTo(x+r, y);
+      this.arcTo(x+w, y,   x+w, y+h, r);
+      this.arcTo(x+w, y+h, x,   y+h, r);
+      this.arcTo(x,   y+h, x,   y,   r);
+      this.arcTo(x,   y,   x+w, y,   r);
+      this.closePath();
+      return this;
+  }
+
+  box_size = 4
+  spacing_x = 10
+  spacing_y = (1.4*(3*box_size+2*spacing_x) - 3*box_size)/2;
+  extrude = box_size/2
+
+
+  class RChar {
+      constructor(xx, yy) {
+	  this.offset_x = xx;
+	  this.offset_y = yy;
+	  this.enable_arr = [];
+	  this.randInit();
+	  // <!-- this.init(); -->
+	  this.fillMissingDots();
+      }
+      randInit() {
+	  for (let i = 0; i < 25; ++i)
+	      this.enable_arr.push(Math.random()>0.5);
+      }
+      init() {
+	  this.enable_arr = [
+	      // dots [0 - 8]
+	      0, 0, 1,
+	      1, 1, 0,
+	      1, 0, 1,
+	      // horizontal slash [9 - 14]
+	      0, 0,
+	      1, 0,
+	      0, 0,
+	      // vertical slash [15 - 20]
+	      1, 0, 0,
+	      1, 0, 0,
+	      // main diagonal \ [21 - 22]
+	      0, 1,
+	      // off diagonal [23 - 24]
+	      0, 0,
+	  ]
+      }
+
+      fillMissingDots() {
+	  function enable_func() {
+	      let obj = arguments[0];
+	      for (let ii = 2; ii < arguments.length; ++ii)
+		  obj.enable_arr[arguments[1]] |= obj.enable_arr[arguments[ii]];
+	  }
+	  enable_func(this, 0, 9, 15, 21);
+	  enable_func(this, 1, 9, 10, 16);
+	  enable_func(this, 2, 10, 17, 24);
+	  enable_func(this, 3, 15, 18, 11);
+	  enable_func(this, 4, 11, 12, 16, 19, 21, 22, 23, 24);
+	  enable_func(this, 5, 12, 17, 20);
+	  enable_func(this, 6, 13, 18, 23);
+	  enable_func(this, 7, 13, 14, 19);
+	  enable_func(this, 8, 14, 20, 22);
+      }
+
+      draw() {
+	  let enable_ind = 0;
+	  // Dots
+	  for (let yy = 0; yy < 3; ++yy)
+	      for (let xx = 0; xx < 3; ++xx)
+		  if (this.enable_arr[enable_ind++])
+		      ctx.roundRect(this.offset_x + (box_size+spacing_x)*xx, this.offset_y + (box_size+spacing_y)*yy, box_size, box_size, box_size/3).fill();
+	  // Horizontal dashes
+	  for (let yy = 0; yy < 3; ++yy)
+	      for (let xx = 0; xx < 2; ++xx)
+		  if (this.enable_arr[enable_ind++])
+		      ctx.fillRect(this.offset_x+box_size-extrude + (box_size+spacing_x)*xx, this.offset_y + (box_size+spacing_y)*yy, spacing_x+2*extrude, box_size);
+	  // Vertical dashes
+	  for (let yy = 0; yy < 2; ++yy)
+	      for (let xx = 0; xx < 3; ++xx)
+		  if (this.enable_arr[enable_ind++])
+		      ctx.fillRect(this.offset_x + (box_size+spacing_x)*xx, this.offset_y+box_size-extrude + (box_size+spacing_y)*yy, box_size, spacing_y+2*extrude);
+	  // main diagonal
+	  if (this.enable_arr[enable_ind++])
+	  {
+	      ctx.save();
+	      ctx.translate(this.offset_x + box_size, this.offset_y);
+	      ctx.rotate(Math.atan2((2*box_size+2*spacing_y), (2*box_size+2*spacing_x)));
+	      ctx.fillRect(0, 0, Math.sqrt(Math.pow(box_size+spacing_x, 2) + Math.pow(box_size+spacing_y, 2)), 1.2*box_size);
+	      ctx.restore();
+	  }
+	  if (this.enable_arr[enable_ind++])
+	  {
+	      ctx.save();
+	      ctx.translate(this.offset_x + 2*box_size + spacing_x, this.offset_y + box_size + spacing_y);
+	      ctx.rotate(Math.atan2((2*box_size+2*spacing_y), (2*box_size+2*spacing_x)));
+	      ctx.fillRect(0, 0, Math.sqrt(Math.pow(box_size+spacing_x, 2) + Math.pow(box_size+spacing_y, 2)), 1.2*box_size);
+	      ctx.restore();
+	  }
+	  // off diagonal
+	  if (this.enable_arr[enable_ind++])
+	  {
+	      ctx.save();
+	      ctx.translate(this.offset_x, this.offset_y + 2*box_size + 2*spacing_y);
+	      ctx.rotate(Math.atan2(-(2*box_size+2*spacing_y), (2*box_size+2*spacing_x)));
+	      ctx.fillRect(0, 0, Math.sqrt(Math.pow(box_size+spacing_x, 2) + Math.pow(box_size+spacing_y, 2)), 1.2*box_size);
+	      ctx.restore();
+	  }
+	  if (this.enable_arr[enable_ind++])
+	  {
+	      ctx.save();
+	      ctx.translate(this.offset_x + box_size + spacing_x, this.offset_y + box_size + spacing_y);
+	      ctx.rotate(Math.atan2(-(2*box_size+2*spacing_y), (2*box_size+2*spacing_x)));
+	      ctx.fillRect(0, 0, Math.sqrt(Math.pow(box_size+spacing_x, 2) + Math.pow(box_size+spacing_y, 2)), 1.2*box_size);
+	      ctx.restore();
+	  }
+      }
+  }
+
+
+  for (let xx = 0; xx < 5; ++xx) {
+      randChar = new RChar((3*box_size + 2*spacing_x + 20) * xx, 10);
+      randChar.draw();
+  }
+</script>

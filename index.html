@@ -2,9 +2,35 @@
     body {
         background: #fff4e3;
     }
+    .container {
+        width: 800px;
+        margin: 0 auto;
+    }
+    canvas {
+        width: 100%;
+        display: block;
+        margin: 40px auto;
+        margin-bottom: 20px;
+    }
+    #gen {
+        text-align: center;
+        padding: 0.5em 1em;
+        font-size: 1.5em;
+        color: #02111B;
+        background: #3F4045;
+        color: #FFF4E3;
+        /* border: 1px solid black; */
+        border-radius: 5px;
+        display: block;
+        margin: 0 40%;
+        font-family: sans-serif;
+        cursor: pointer;
+    }
 </style>
-
-<canvas id="canva" style="width: 800px; display:block; margin: 0 auto;"></canvas>
+<div class="container">
+    <canvas id="canva"></canvas>
+    <div id="gen" href="#" onclick="populate_rune_table()">Generate</div>
+</div>
 
 <script src="runic.js">
 </script>

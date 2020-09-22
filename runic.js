@@ -1,10 +1,10 @@
-var c = document.getElementById("canva");
-width = parseInt(c.style.width);
+var canvas = document.getElementById("canva");
+width = canvas.getBoundingClientRect().width;
 height = width;
-c.width = width;
-c.height = 200 + height;
-c.style.height = height;
-var ctx = c.getContext("2d");
+canvas.width = width;
+canvas.height = height;
+canvas.style.height = height;
+var ctx = canvas.getContext("2d");
 // ctx.scale(0.5, 0.5);
 
 CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
@@ -27,7 +27,7 @@ class RChar {
         this.box_size = width/8;
         this.box_ratio = 2.5;
         this.spacing_x = this.box_size*this.box_ratio;
-        this.spacing_y = (1.4*(3*this.box_size+2*this.spacing_x) - 3*this.box_size)/2;
+        this.spacing_y = (1.1*(3*this.box_size+2*this.spacing_x) - 3*this.box_size)/2;
         this.extrude = this.box_size/2;
         this.box_radius = this.box_size/3;
         this.diagonal_length = Math.sqrt(Math.pow(this.box_size+this.spacing_x, 2) + Math.pow(this.box_size+this.spacing_y, 2));
@@ -83,7 +83,7 @@ class RChar {
 
     draw() {
         let enable_ind = 0;
-        ctx.fillStyle = "#5d5d5a";
+        ctx.fillStyle = "#30292F";
         // Dots
         for (let yy = 0; yy < 3; ++yy)
             for (let xx = 0; xx < 3; ++xx)
@@ -136,11 +136,15 @@ class RChar {
     }
 
 }
-
-for (let yy = 0; yy < 10; ++yy) {
-    for (let xx = 0; xx < 10; ++xx) {
-        var size = 40;
-        randChar = new RChar((size+1.5*size) * xx, 40 + (size+1.5*size)*yy, size);
-        randChar.draw();
+function populate_rune_table() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let yy = 0; yy < 10; ++yy) {
+        for (let xx = 0; xx < 10; ++xx) {
+            var size = 50;
+            randChar = new RChar((size+1.0*size) * xx, (size+1.0*size)*yy, size);
+            randChar.draw();
+        }
     }
 }
+
+populate_rune_table();

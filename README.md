@@ -1,6 +1,8 @@
 # Runicjs
 
+![Sample rune tablet](runicjs.png)
+
 Just some rune tablet characters. 
 
-Generate new tablet with the button. 
+Press button and boom, new characters. 
 

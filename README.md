@@ -6,3 +6,6 @@ Just some rune tablet characters.
 
 Press button and boom, new characters. 
 
+--- 
+
+Inspired from https://watabou.itch.io/rune-generator

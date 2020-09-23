@@ -1,9 +1,4 @@
 var canvas = document.getElementById("canva");
-width = canvas.getBoundingClientRect().width;
-height = width;
-canvas.width = width;
-canvas.height = height;
-canvas.style.height = height;
 var ctx = canvas.getContext("2d");
 // ctx.scale(0.5, 0.5);
 
@@ -137,10 +132,19 @@ class RChar {
 
 }
 function populate_rune_table() {
+    var c_width = canvas.getBoundingClientRect().width;
+    var c_height = c_width - 100;
+    if (c_height < screen.height/2)
+        c_height = screen.height/2; 
+    canvas.width = c_width;
+    canvas.height = c_height;
+    canvas.style.height = c_height;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let yy = 0; yy < 10; ++yy) {
-        for (let xx = 0; xx < 10; ++xx) {
-            var size = 50;
+    var size = c_width/20;
+    var max_yy = Math.floor(c_height/(2*size));
+    var max_xx = Math.floor(c_width/(2*size));
+    for (let yy = 0; yy < max_yy; ++yy) {
+        for (let xx = 0; xx < max_xx; ++xx) {
             randChar = new RChar((size+1.0*size) * xx, (size+1.0*size)*yy, size);
             randChar.draw();
         }

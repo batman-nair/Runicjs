@@ -9,7 +9,6 @@
     h1 {
         margin-top: 1.5em;
         margin-bottom: 10px;
-        text-align: center;
     }
     .container {
         width: 800px;
@@ -26,8 +25,10 @@
         margin: 40px auto;
         margin-bottom: 20px;
     }
-    #gen {
-        text-align: center;
+    .button-container {
+        display: inline-flex;
+    }
+    .button {
         padding: 0.5em 1em;
         font-size: 1.5em;
         background: #3F4045;
@@ -35,7 +36,7 @@
         border-radius: 5px;
         display: block;
         width: 4em;
-        margin: 0 auto;
+        margin: 0 1em;
         cursor: pointer;
     }
 </style>
@@ -43,7 +44,10 @@
 <subtitle>Generate rune tablets</subtitle>
 <div class="container">
     <canvas id="canva"></canvas>
-    <div id="gen" href="#" onclick="populate_rune_table()">Generate</div>
+    <div class="button-container">
+        <div class="button" href="#" onclick="populate_rune_table()">Generate</div>
+        <div class="button" href="https://github.com/batman-nair/Runicjs">Github</div>
+    </div>
 </div>
 
 <script src="runic.js">

@@ -133,9 +133,11 @@ class RChar {
 }
 function populate_rune_table() {
     var c_width = canvas.getBoundingClientRect().width;
-    var c_height = c_width - 100;
+    var c_height = c_width;
     if (c_height < screen.height/2)
         c_height = screen.height/2; 
+    if (c_height > screen.height*0.6 && screen.height != 0)
+        c_height = screen.height*0.6;
     canvas.width = c_width;
     canvas.height = c_height;
     canvas.style.height = c_height;

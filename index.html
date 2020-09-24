@@ -33,11 +33,18 @@
         font-size: 1.5em;
         background: #3F4045;
         color: #FFF4E3;
+        border: 1px solid #3F4045;
         border-radius: 5px;
         display: block;
         width: 4em;
         margin: 0 1em;
         cursor: pointer;
+        text-decoration: none;
+    }
+    .button:hover {
+        background: none;
+        border: 1px solid #3F4045;
+        color: #3F4045;
     }
 </style>
 <h1> RunicJs </h1>
@@ -45,8 +52,8 @@
 <div class="container">
     <canvas id="canva"></canvas>
     <div class="button-container">
-        <div class="button" href="#" onclick="populate_rune_table()">Generate</div>
-        <div class="button" href="https://github.com/batman-nair/Runicjs">Github</div>
+        <a class="button" href="#" onclick="populate_rune_table()">Generate</a>
+        <a class="button" target="_blank" href="https://github.com/batman-nair/Runicjs">Github</a>
     </div>
 </div>
 
